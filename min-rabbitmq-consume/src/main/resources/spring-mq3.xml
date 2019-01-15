@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans default-lazy-init="false"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="listener"
+		class="org.springframework.amqp.remoting.service.AmqpInvokerServiceExporter">
+		<property name="serviceInterface" value="com.min.rabbitmq.api.RemoteService" />
+		<property name="service" ref="service" />
+		<property name="amqpTemplate" ref="template" />
+	</bean>
+	
+	<bean id="service" class="com.min.rabbitmq.service.RemoteServiceImpl" />
+	
+	<!-- AMQP线程池 -->
+	<task:executor id="amqpConnectionTaskExecutor" pool-size="${mqConnRecvThreads}"/>
+	<rabbit:connection-factory
+		id="connectionFactory" channel-cache-size="${mqChannelCacheSize}" executor="amqpConnectionTaskExecutor"  
+		host="${mqHost}" port="${mqPort}" username="${mqUser}" password="${mqPassword}"
+		virtual-host="${mqVHost}" />
+	
+	<rabbit:template id="template" connection-factory="connectionFactory" />
+	
+	<rabbit:queue name="remoting.queue" />
+	
+	<rabbit:listener-container connection-factory="connectionFactory" concurrency="${mqServiceConcurrency}">
+		<rabbit:listener ref="listener" queue-names="remoting.queue" />
+	</rabbit:listener-container>
+	
+</beans>

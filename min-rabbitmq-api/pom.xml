@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>min-rabbitmq</artifactId>
+    <groupId>com.min.rabbitmq</groupId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <groupId>com.min.rabbitmq</groupId>
+  <artifactId>min-rabbitmq-api</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <name>min-rabbitmq-api</name>
+  <!-- FIXME change it to the project's website -->
+  <url>http://www.example.com</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
+  </properties>
+  
+  <dependencies>
+	<!-- 添加日志相关jar包 -->
+	<dependency>
+		<groupId>log4j</groupId>
+		<artifactId>log4j</artifactId>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-api</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-log4j12</artifactId>
+	</dependency>
+	
+	<!-- 添加junit4依赖 -->
+	<dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<!-- 指定范围，在测试时才会加载 -->
+		<scope>test</scope>
+	</dependency>
+  </dependencies>
+  
+  <build>
+    <finalName>min-rabbitmq-api</finalName>
+    <plugins>
+    	<!-- jar插件 -->  
+		<plugin>  
+			<groupId>org.apache.maven.plugins</groupId>  
+			<artifactId>maven-jar-plugin</artifactId>  
+			<configuration>  
+				<archive>  
+					<manifest>  
+						<addDefaultImplementationEntries>true</addDefaultImplementationEntries>  
+						<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>  
+					</manifest>  
+				</archive>  
+			</configuration>  
+		</plugin>
+	</plugins>
+  </build>
+  
+</project>

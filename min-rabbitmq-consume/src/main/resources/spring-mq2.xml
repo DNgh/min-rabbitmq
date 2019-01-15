@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans default-lazy-init="false"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!--配置connection-factory，指定连接rabbit server参数 -->
+	<rabbit:connection-factory
+		id="mqConnectionFactory" host="${mqHost}"
+		port="${mqPort}" username="${mqUser}" password="${mqPassword}"
+		virtual-host="${mqVHost}" />
+
+	<!--定义rabbit template用于数据的接收和发送 -->
+	<rabbit:template id="amqpTemplate"
+		connection-factory="mqConnectionFactory" exchange="exchangeTest" reply-timeout="${mqRPCTimeout}"/>
+
+	<!--通过指定下面的admin信息，当前producer中的exchange和queue会在rabbitmq服务器上自动生成 -->
+	<rabbit:admin connection-factory="mqConnectionFactory" />
+	<!--定义queue -->
+	<rabbit:queue name="queueTest" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 定义direct exchange，绑定queueTest -->
+	<rabbit:direct-exchange name="exchangeTest" durable="true" auto-delete="false">
+		<rabbit:bindings>
+			<rabbit:binding queue="queueTest" key="queueTestKey"></rabbit:binding>
+		</rabbit:bindings>
+	</rabbit:direct-exchange>
+
+	<!-- 消息接收者 -->
+	<!-- <bean id="messageReceiver" class="com.min.rabbitmq.SimpleServer"></bean> --> 
+	<!-- queue litener 自动监听队列，当有消息到达时会通知监听在对应的队列上的监听对象 -->
+	<!-- <rabbit:listener-container connection-factory="mqConnectionFactory" acknowledge="auto">
+		<rabbit:listener queues="queueTest" ref="messageReceiver" />
+	</rabbit:listener-container> -->
+	
+	<bean id="messageReceiver" class="com.min.rabbitmq.SimpleResponse"></bean>
+	<rabbit:listener-container connection-factory="mqConnectionFactory" acknowledge="auto">
+		<rabbit:listener queues="queueTest" ref="messageReceiver" method="processMsg"/>
+	</rabbit:listener-container>
+	
+</beans>

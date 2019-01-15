@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans default-lazy-init="false"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd
+		http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+	<!-- 作为标准的GMP定义文件，这里定义了包括AMQP连接池、Template、MessageConverter和DestinationResolver在内的一组对象 -->
+
+	<!-- RabbitMQ连接池 -->
+ 	<task:executor id="amqpConnectionTaskExecutor" pool-size="${mqConnRecvThreads}"/>
+	<rabbit:connection-factory id="mqConnectionFactory" 
+		executor="amqpConnectionTaskExecutor" channel-cache-size="${mqChannelCacheSize}" 
+		host="${mqHost}" port="${mqPort}" username="${mqUser}" password="${mqPassword}"
+		virtual-host="${mqVHost}"/>
+	
+	<!-- 标准的建立Queue的参数 -->
+	<rabbit:queue-arguments id="amqpQueueArguments">
+		<!-- 暂时没有 -->
+	</rabbit:queue-arguments>
+	
+	<!-- 固定响应队列 -->
+	<rabbit:queue queue-arguments="amqpQueueArguments" id="amqpTemplateReplyQueue" name="min.common.reply"/>
+	<rabbit:template id="amqpTemplate" connection-factory="mqConnectionFactory"
+		reply-timeout="${mqRPCTimeout}" reply-queue="amqpTemplateReplyQueue">
+		<rabbit:reply-listener concurrency="2"/>
+	</rabbit:template>
+	
+	<!-- MQ的管理，包括队列、交换器 声明等 -->
+	<rabbit:admin connection-factory="mqConnectionFactory"/>
+	
+	<!-- 队列列表，没有就自动创建 -->
+	<rabbit:queue queue-arguments="amqpQueueArguments" id="customeQueue" name="min.rpc.hello"/>
+	
+</beans>

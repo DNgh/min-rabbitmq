@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>min-rabbitmq</artifactId>
+    <groupId>com.min.rabbitmq</groupId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <groupId>com.min.rabbitmq</groupId>
+  <artifactId>min-rabbitmq-publish</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <name>min-rabbitmq-publish</name>
+  <!-- FIXME change it to the project's website -->
+  <url>http://www.example.com</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+  	<dependency>
+		<groupId>com.min.rabbitmq</groupId>
+		<artifactId>min-rabbitmq-api</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+  	</dependency>
+	<dependency>
+	   <groupId>commons-lang</groupId>
+	   <artifactId>commons-lang</artifactId>
+	</dependency>
+	<!-- 添加spring核心依赖 -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-core</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-beans</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-context</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-context-support</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-aop</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-tx</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-orm</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-jdbc</artifactId>
+	</dependency>
+	<!-- Spring data jpa -->
+	<dependency>
+		<groupId>org.springframework.data</groupId>
+		<artifactId>spring-data-jpa</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-aspects</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-test</artifactId>
+	</dependency>
+	
+	<!-- spring rabbit -->
+    <dependency>
+	    <groupId>org.springframework.amqp</groupId>
+	    <artifactId>spring-rabbit</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>com.rabbitmq</groupId>
+		<artifactId>amqp-client</artifactId>
+	</dependency>
+			
+	<!-- aspectj -->
+	<dependency>
+		<groupId>org.aspectj</groupId>
+		<artifactId>aspectjrt</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.aspectj</groupId>
+		<artifactId>aspectjweaver</artifactId>
+	</dependency>
+	
+	<!--hibernate的包 -->
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-core</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-entitymanager</artifactId>
+		<exclusions>
+			<exclusion>
+				<artifactId>cglib</artifactId>
+				<groupId>cglib</groupId>
+			</exclusion>
+			<exclusion>
+				<artifactId>dom4j</artifactId>
+				<groupId>dom4j</groupId>
+			</exclusion>
+		</exclusions>
+	</dependency>
+	<dependency>
+		<groupId>org.hibernate.javax.persistence</groupId>
+		<artifactId>hibernate-jpa-2.1-api</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-ehcache</artifactId>
+	</dependency>
+	
+	<!-- 添加mysql驱动依赖 -->
+	<dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+	</dependency>
+	
+	<!-- 添加数据库连接池依赖 -->
+	<dependency>
+		<groupId>org.apache.commons</groupId>
+		<artifactId>commons-dbcp2</artifactId>
+	</dependency>
+	
+	<!-- 添加日志相关jar包 -->
+	<dependency>
+		<groupId>log4j</groupId>
+		<artifactId>log4j</artifactId>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-api</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-log4j12</artifactId>
+	</dependency>
+	
+	<!-- 添加junit4依赖 -->
+	<dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<!-- 指定范围，在测试时才会加载 -->
+		<scope>test</scope>
+	</dependency>
+  </dependencies>
+  
+  <build>
+    <finalName>min-rabbitmq-publish</finalName>
+    <plugins>
+    	<!-- jar插件 -->  
+		<plugin>  
+			<groupId>org.apache.maven.plugins</groupId>  
+			<artifactId>maven-jar-plugin</artifactId>  
+			<configuration>  
+				<archive>  
+					<manifest>  
+						<addDefaultImplementationEntries>true</addDefaultImplementationEntries>  
+						<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>  
+					</manifest>  
+				</archive>  
+			</configuration>  
+		</plugin>
+	</plugins>
+  </build>
+</project>
