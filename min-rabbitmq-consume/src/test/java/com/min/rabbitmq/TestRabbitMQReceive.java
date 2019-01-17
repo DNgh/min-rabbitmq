@@ -18,11 +18,11 @@ public class TestRabbitMQReceive {
         try
         {
             ConnectionFactory factory = new ConnectionFactory();
-            factory.setHost("95.169.2.44");
-            factory.setPort(27103);
-            factory.setUsername("zblog");
-            factory.setPassword("zblog@123");
-            factory.setVirtualHost("zblogHost");
+            factory.setHost("ip");
+            factory.setPort(5672);
+            factory.setUsername("username");
+            factory.setPassword("password");
+            factory.setVirtualHost("vhost");
             
             connection = factory.newConnection();
             channel = connection.createChannel();
